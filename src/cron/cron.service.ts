@@ -11,6 +11,7 @@ export default class CronService {
 	async cronjob() {
 		cron.schedule("* * * * *", async () => {
 			await this.itemService.deleteExpiredItems();
+			console.log("Deleted expired items");
 		});
 	}
 }
