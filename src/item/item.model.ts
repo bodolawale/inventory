@@ -1,23 +1,18 @@
+require("pg").defaults.parseInt8 = true;
 import { Model, DataTypes, Optional } from "sequelize";
-import db from "../db";
+import sequelize from "../db";
 
 export interface IItem {
-	id: number;
 	item: string;
 	quantity: number;
 	expiry: number;
 }
 
-export interface ICreateItem extends Optional<IItem, "id"> {}
-interface ItemInstance extends Model<IItem, ICreateItem>, IItem {}
+interface ItemModel extends IItem, Model {}
 
-const Item = db.define<ItemInstance>(
+const Item = sequelize.define<ItemModel>(
 	"item",
 	{
-		id: {
-			primaryKey: true,
-			type: DataTypes.INTEGER,
-		},
 		item: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -27,7 +22,7 @@ const Item = db.define<ItemInstance>(
 			allowNull: false,
 		},
 		expiry: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.BIGINT,
 			allowNull: false,
 		},
 	},
@@ -36,6 +31,6 @@ const Item = db.define<ItemInstance>(
 	}
 );
 
-Item.sync();
+Item.sync({ alter: true });
 
 export default Item;

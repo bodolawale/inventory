@@ -1,9 +1,9 @@
 import express from "express";
-import { validationResult } from "express-validator";
 import ItemRepository from "./item.repository";
 import ItemService from "./item.service";
 import ItemController from "./item.controller";
 import validateRequest from "./item.middleware";
+import isValidRequest from "../middlewares/isValidRequest";
 
 const itemService = new ItemService(ItemRepository);
 const itemController = new ItemController(itemService);
@@ -15,14 +15,14 @@ router.get("/quantity", itemController.getItem);
 router.post(
 	"/add",
 	validateRequest("add"),
-	validationResult,
+	isValidRequest,
 	itemController.addItem
 );
 
 router.post(
 	"/sell",
 	validateRequest("sell"),
-	validationResult,
+	isValidRequest,
 	itemController.sellItem
 );
 
