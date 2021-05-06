@@ -1,12 +1,27 @@
 import { Request, Response } from "express";
+import ItemService from "./item.service";
 export default class ItemController {
-	static async getItem(req: Request, res: Response) {
-		res.json({ message: "Item fetched successfully" });
+	private itemService: ItemService;
+
+	constructor(itemService: ItemService) {
+		this.itemService = itemService;
 	}
-	static async addItem(req: Request, res: Response) {
+
+	getItem = async (req: Request, res: Response) => {
+		const data = await this.itemService.getItem(req.params.item);
+		res.json({ message: "Item fetched successfully", data });
+	};
+
+	addItem = async (req: Request, res: Response) => {
+		await this.itemService.addItem(
+			req.params.item,
+			req.body.quantity,
+			req.body.expiry
+		);
 		res.json({ message: "Item added successfully" });
-	}
-	static async sellItem(req: Request, res: Response) {
+	};
+
+	sellItem = async (req: Request, res: Response) => {
 		res.json({ message: "Item sold successfully" });
-	}
+	};
 }

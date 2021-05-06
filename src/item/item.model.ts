@@ -3,26 +3,31 @@ import db from "../db";
 
 export interface IItem {
 	id: number;
+	item: string;
 	quantity: number;
 	expiry: number;
 }
 
-interface ItemCreationAttributes extends Optional<IItem, "id"> {}
-interface ItemInstance extends Model<IItem, ItemCreationAttributes>, IItem {}
+export interface ICreateItem extends Optional<IItem, "id"> {}
+interface ItemInstance extends Model<IItem, ICreateItem>, IItem {}
 
 const Item = db.define<ItemInstance>(
 	"item",
 	{
 		id: {
 			primaryKey: true,
-			type: DataTypes.INTEGER.UNSIGNED,
+			type: DataTypes.INTEGER,
+		},
+		item: {
+			type: DataTypes.STRING,
+			allowNull: false,
 		},
 		quantity: {
-			type: DataTypes.NUMBER,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 		expiry: {
-			type: DataTypes.NUMBER,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 	},
@@ -30,5 +35,7 @@ const Item = db.define<ItemInstance>(
 		timestamps: true,
 	}
 );
+
+Item.sync();
 
 export default Item;
