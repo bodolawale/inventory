@@ -3,6 +3,7 @@ import { Model, DataTypes, Optional } from "sequelize";
 import sequelize from "../db";
 
 export interface IItem {
+	id?: number;
 	item: string;
 	quantity: number;
 	expiry: number;

@@ -37,6 +37,7 @@ export default class ItemController {
 
 	sellItem = async (req: Request, res: Response) => {
 		try {
+			await this.itemService.sellItem(req.params.item, req.body.quantity);
 			res.json({ message: "Item sold successfully" });
 		} catch (error) {
 			return res.json({

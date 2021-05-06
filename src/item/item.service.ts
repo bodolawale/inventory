@@ -1,3 +1,4 @@
+import { IItem } from "./item.model";
 import ItemRepository from "./item.repository";
 
 export default class ItemService {
@@ -5,6 +6,10 @@ export default class ItemService {
 
 	constructor(itemRepository: typeof ItemRepository) {
 		this.itemRepository = itemRepository;
+	}
+
+	public async addItem(item: string, quantity: number, expiry: number) {
+		return this.itemRepository.addItem({ item, quantity, expiry });
 	}
 
 	public async getItem(item: string) {
@@ -17,8 +22,40 @@ export default class ItemService {
 		});
 		return { quantity, validTill };
 	}
-	public async addItem(item: string, quantity: number, expiry: number) {
-		return this.itemRepository.addItem({ item, quantity, expiry });
+
+	public async sellItem(item: string, quantity: number) {
+		const items = await this.itemRepository.getItem(item);
+		const totalQuantity = items.reduce((acc, curr) => acc + curr.quantity, 0);
+
+		if (quantity > totalQuantity)
+			throw new Error("Given quantity is more than available quantity");
+
+		await this.removeQuantity(quantity, items);
 	}
-	public async sellItem() {}
+
+	private async removeQuantity(quantity: number, items: IItem[]) {
+		const promises = [];
+
+		for (const item of items) {
+			if (quantity === 0) break;
+
+			if (quantity >= item.quantity) {
+				quantity -= item.quantity;
+				promises.push(this.itemRepository.deleteItem(item.id));
+				continue;
+			}
+
+			if (quantity < item.quantity) {
+				promises.push(
+					this.itemRepository.updateItemQuantity(
+						item.id,
+						item.quantity - quantity
+					)
+				);
+				break;
+			}
+		}
+
+		await Promise.all(promises);
+	}
 }
