@@ -1,13 +1,13 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
 
-import ItemRoutes from "./item/item.route";
-
 const app: Application = express();
-
 dotenv.config();
 
 import "./db";
+import ItemRoutes from "./item/item.route";
+
+app.use(express.json());
 
 app.use("/:item", ItemRoutes);
 
