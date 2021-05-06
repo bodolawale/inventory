@@ -1,9 +1,13 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
 
+import ItemRoutes from "./item/item.route";
+
 const app: Application = express();
 
 dotenv.config();
+
+app.use("/:item", ItemRoutes);
 
 const PORT = process.env.PORT || 2323;
 
