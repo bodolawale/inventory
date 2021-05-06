@@ -19,4 +19,10 @@ export default class ItemRepository {
 	static async deleteItem(id: number): Promise<void> {
 		await Item.destroy({ where: { id } });
 	}
+
+	static async deleteExpiredItems() {
+		await Item.destroy({
+			where: { expiry: { [Op.lt]: Date.now() } },
+		});
+	}
 }

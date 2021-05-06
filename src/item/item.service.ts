@@ -33,6 +33,10 @@ export default class ItemService {
 		await this.removeQuantity(quantity, items);
 	}
 
+	public async deleteExpiredItems() {
+		await this.itemRepository.deleteExpiredItems();
+	}
+
 	private async removeQuantity(quantity: number, items: IItem[]) {
 		const promises = [];
 

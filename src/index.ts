@@ -5,6 +5,9 @@ const app: Application = express();
 dotenv.config();
 
 import "./db";
+import ItemRepository from "./item/item.repository";
+import ItemService from "./item/item.service";
+import CronService from "./cron/cron.service";
 import ItemRoutes from "./item/item.route";
 
 app.use(express.json());
@@ -26,3 +29,8 @@ function errorHandler(err: any, req: any, res: any, next: any) {
 }
 
 app.use(errorHandler);
+
+const itemService = new ItemService(ItemRepository);
+const cronService = new CronService(itemService);
+
+cronService.cronjob();
