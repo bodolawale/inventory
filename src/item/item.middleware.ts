@@ -12,7 +12,10 @@ const validateRequest = (method: string) => {
 					.withMessage("Required body param 'quantity' not provided")
 					.bail()
 					.custom((value) => typeof value === "number")
-					.withMessage("'quantity' should be a number"),
+					.withMessage("'quantity' should be a number")
+					.bail()
+					.custom((value) => value > 0)
+					.withMessage("'quantity' should be greater than 0"),
 
 				body("expiry")
 					.exists()
@@ -29,7 +32,10 @@ const validateRequest = (method: string) => {
 					.withMessage("Required body param 'quantity' not provided")
 					.bail()
 					.custom((value) => typeof value === "number")
-					.withMessage("'quantity' should be a number"),
+					.withMessage("'quantity' should be a number")
+					.bail()
+					.custom((value) => value > 0)
+					.withMessage("'quantity' should be greater than 0"),
 			];
 
 		default:
