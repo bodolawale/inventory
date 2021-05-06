@@ -7,6 +7,8 @@ const app: Application = express();
 
 dotenv.config();
 
+import "./db";
+
 app.use("/:item", ItemRoutes);
 
 const PORT = process.env.PORT || 2323;
