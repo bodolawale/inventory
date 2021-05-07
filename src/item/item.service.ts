@@ -22,6 +22,9 @@ export default class ItemService {
 
 	public async sellItem(item: string, quantity: number) {
 		const items = await this.itemRepository.getItem(item);
+
+		if (items.length === 0) throw new Error("Item not found or expired");
+
 		const totalQuantity = items.reduce((acc, curr) => acc + curr.quantity, 0);
 
 		if (quantity > totalQuantity)

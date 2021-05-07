@@ -5,7 +5,7 @@ export default class FakeItemRepository {
 	private items: IItem[];
 
 	constructor() {
-		this.id = 1;
+		this.id = 0;
 		this.items = [];
 	}
 
@@ -38,5 +38,10 @@ export default class FakeItemRepository {
 
 	private getItemById(itemId: number) {
 		return this.items.findIndex(({ id }) => id === itemId);
+	}
+
+	async clearDB() {
+		this.id = 0;
+		this.items = [];
 	}
 }
