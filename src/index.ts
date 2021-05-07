@@ -30,7 +30,7 @@ function errorHandler(err: any, req: any, res: any, next: any) {
 
 app.use(errorHandler);
 
-const itemService = new ItemService(ItemRepository);
+const itemService = new ItemService(new ItemRepository());
 const cronService = new CronService(itemService);
 
 cronService.cronjob();
