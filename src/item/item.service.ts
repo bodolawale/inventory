@@ -14,13 +14,10 @@ export default class ItemService {
 
 	public async getItem(item: string) {
 		const items = await this.itemRepository.getItem(item);
-		let quantity = 0;
-		let validTill = Infinity;
-		items.forEach((item) => {
-			quantity += item.quantity;
-			validTill = item.expiry < validTill ? item.expiry : validTill;
-		});
-		return { quantity, validTill };
+
+		if (items.length === 0) return { quantity: 0, validTill: null };
+
+		return this.getTotalQuantity(items);
 	}
 
 	public async sellItem(item: string, quantity: number) {
@@ -61,5 +58,15 @@ export default class ItemService {
 		}
 
 		await Promise.all(promises);
+	}
+
+	private getTotalQuantity(items: IItem[]) {
+		let quantity = 0;
+		let validTill = Infinity;
+		items.forEach((item) => {
+			quantity += item.quantity;
+			validTill = item.expiry < validTill ? item.expiry : validTill;
+		});
+		return { quantity, validTill };
 	}
 }
