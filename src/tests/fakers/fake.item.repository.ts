@@ -1,8 +1,8 @@
 import { IItem } from "./../../item/item.model";
 
 export default class FakeItemRepository {
-	public id: number;
-	public items: IItem[];
+	private id: number;
+	private items: IItem[];
 
 	constructor() {
 		this.id = 1;

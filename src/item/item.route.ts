@@ -5,7 +5,7 @@ import ItemController from "./item.controller";
 import validateRequest from "./item.middleware";
 import isValidRequest from "../middlewares/isValidRequest";
 
-const itemService = new ItemService(ItemRepository);
+const itemService = new ItemService(new ItemRepository());
 const itemController = new ItemController(itemService);
 
 const router = express.Router({ mergeParams: true });

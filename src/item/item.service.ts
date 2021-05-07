@@ -2,9 +2,9 @@ import { IItem } from "./item.model";
 import ItemRepository from "./item.repository";
 
 export default class ItemService {
-	private itemRepository: typeof ItemRepository;
+	private itemRepository: ItemRepository;
 
-	constructor(itemRepository: typeof ItemRepository) {
+	constructor(itemRepository: ItemRepository) {
 		this.itemRepository = itemRepository;
 	}
 
