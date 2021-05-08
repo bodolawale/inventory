@@ -32,6 +32,6 @@ const Item = sequelize.define<ItemModel>(
 	}
 );
 
-Item.sync({ alter: true });
+Item.sync({});
 
 export default Item;

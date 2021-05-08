@@ -1,8 +1,10 @@
-import express, { Application } from "express";
+import express, { Application, Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 
 const app: Application = express();
 dotenv.config();
+app.use(cors());
 
 import "./db";
 import ItemRepository from "./item/item.repository";
@@ -20,15 +22,27 @@ app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
 });
 
-function errorHandler(err: any, req: any, res: any, next: any) {
+function errorHandler(
+	err: any,
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
 	res.status(500).send({
-		success: false,
 		message: "An error occurred while processing this request",
 		data: err.toString(),
 	});
 }
 
+function error404(req: Request, res: Response, next: NextFunction) {
+	res.status(404).send({
+		success: false,
+		message: "Invalid URL",
+	});
+}
+
 app.use(errorHandler);
+app.use(error404);
 
 const itemService = new ItemService(new ItemRepository());
 const cronService = new CronService(itemService);
